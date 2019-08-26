@@ -2,8 +2,8 @@
   Source.cpp
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  0 of 43 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 128 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  Triangles.vcxproj -> C:\Users\i851169\source\repos\CG\x64\Release\Triangles.exe
+  Triangles.vcxproj -> C:\Users\i851169\source\repos\computacao-grafica\x64\Release\Triangles.exe
