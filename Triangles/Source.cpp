@@ -106,17 +106,17 @@ int main()
 	// ------------------------------------------------------------------
 	float vertices1[] = {
 		// positions         // colors
-		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-		0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+		0.5f, -0.5f, -0.0f,  0.0f, 1.0f, 0.0f,    // bottom right verde /vermelho
+		-0.7f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  // bottom left azul / verde
+		0.0f,  0.3f, 0.0f,  1.0f, 0.0f, 0.0f   // top  vermelho / azul
 
 	};
 
 	float vertices2[] = {
 		// positions         // colors
-		0.5f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    // bottom right
-		-0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f   // top 
+		0.5f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,    // bottom right
+		0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
+		0.0f,  0.3f, 0.0f,  1.0f, 0.0f, 0.0f // top 
 
 	};
 	unsigned int VBO, VAO, VBO1, VAO1;
@@ -193,7 +193,6 @@ int main()
 			double previousTime = glfwGetTime();
 			previousTime = currentTime;
 		}
-		
 		
 		
 		// input
