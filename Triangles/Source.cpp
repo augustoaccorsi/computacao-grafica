@@ -6,12 +6,10 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-void showFPS(GLFWwindow* pWindow, double previousTime, int frameCount);
-
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 500;
+const unsigned int SCR_HEIGHT = 500;
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -46,7 +44,7 @@ int main()
 
 														 // glfw window creation
 														 // --------------------
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Colored Triangle", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Triangle", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -110,23 +108,18 @@ int main()
 		// positions         // colors
 		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    // bottom right
 		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+		0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
 
 	};
 
 	float vertices2[] = {
-		0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,
-		0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f
-	};
+		// positions         // colors
+		0.5f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    // bottom right
+		-0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f   // top 
 
-	float vertices3[] = {
-		0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,
-		-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f
 	};
-
-	unsigned int VBO, VAO;
+	unsigned int VBO, VAO, VBO1, VAO1;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
@@ -149,23 +142,45 @@ int main()
 	// as we only have a single shader, we could also just activate our shader once beforehand if we want to 
 	glUseProgram(shaderProgram);
 
+	glGenVertexArrays(1, &VAO1);
+	glGenBuffers(1, &VBO1);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(VAO1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+
+	// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	// color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	// glBindVertexArray(0);
+
+	// as we only have a single shader, we could also just activate our shader once beforehand if we want to 
+	glUseProgram(shaderProgram);
+
 	// render loop
 	// -----------
-	
+
 	double previousTime = glfwGetTime();
 	double currentTime = 0.0, fps = 0.0;
 	int nbFrames = 0;
-	int a = 0;
+
 	while (!glfwWindowShouldClose(window))
 	{
-
+		
 		double currentTime = glfwGetTime();
 		double delta = currentTime - previousTime;
 		nbFrames++;
 		if (delta >= 1.0) { // If last cout was more than 1 sec ago
 			//cout << 1000.0 / double(nbFrames) << endl;
 
-			double fps = double(nbFrames) / delta;
+			double fps = delta / 1000;//double(nbFrames) / delta;
 
 			//std::stringstream ss;
 			//ss << GAME_NAME << " " << VERSION << " [" << fps << " FPS]";
@@ -176,43 +191,11 @@ int main()
 
 			nbFrames = 0;
 			double previousTime = glfwGetTime();
-			previousTime  = currentTime;
+			previousTime = currentTime;
 		}
-
-
-		/*currentTime = glfwGetTime();
-		frameCount++;
-		if (currentTime - previousTime >= 1.0) { // If last prinf() was more than 1 sec ago
-			// printf and reset timer
-			fps = (1000.0 / double(frameCount));
-			
-			std::string str = std::to_string(fps);
-			std::string fpsString = "FPS: " + str;
-			const char* title = fpsString.c_str();
-			glfwSetWindowTitle(window, title);
-			
-			frameCount = 0;
-			previousTime += 1.0;
-		}	*/	
-
-		//showFPS(window, previousTime, frameCount);
-
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-
-		glBindVertexArray(VAO);
-
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-
-		glUseProgram(shaderProgram);
-
+		
+		
+		
 		// input
 		// -----
 		processInput(window);
@@ -224,13 +207,15 @@ int main()
 		// render the triangle
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		
+		
+		glBindVertexArray(VAO1);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
-
 	}
 
 	// optional: de-allocate all resources once they've outlived their purpose:
@@ -259,30 +244,4 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	// make sure the viewport matches the new window dimensions; note that width and 
 	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
-}
-
-void processShader() {
-}
-
-void showFPS(GLFWwindow* pWindow, double previousTime, int frameCount){
-	// Measure speed
-	double currentTime = glfwGetTime();
-	frameCount++;
-	// If a second has passed.
-	//if (currentTime - previousTime >= 1.0)
-	int a = 0;
-	if (true)
-	{
-		// Display the frame count here any way you want.
-	
-		//displayFPS(frameCount);
-		a++;
-		std::string str = std::to_string(a);
-		const char* title = str.c_str();
-		glfwSetWindowTitle(pWindow, title);
-
-		frameCount = 0;
-		previousTime = currentTime;
-	}
-	
 }
