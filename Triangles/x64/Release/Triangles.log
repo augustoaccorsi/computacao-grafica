@@ -1,9 +1,8 @@
-﻿  glad.c
-  Triangles.cpp
+﻿  Triangle.cpp
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  94 of 128 functions (73.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
+  126 of 128 functions (98.4%) were compiled, the rest were copied from previous compilation.
+    85 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Triangles.vcxproj -> C:\Users\i851169\source\repos\computacao-grafica\x64\Release\Triangles.exe
