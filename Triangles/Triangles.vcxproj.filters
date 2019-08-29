@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{9745db62-a3a6-4d3a-b985-ed78cabb9f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Core">
+      <UniqueIdentifier>{44206fed-801d-4bad-8153-7f6c5636c168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{643c88bf-69fc-44c6-9e09-fa1637b701f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Desktop\opengl\glad\src\glad.c">
@@ -21,5 +30,36 @@
     <ClCompile Include="Triangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Runnable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\unisinos-computacao-grafica\ExercicioDoisTriangulosPart1\shaders\core\fragment.frag">
+      <Filter>Shader\Core</Filter>
+    </None>
+    <None Include="..\..\unisinos-computacao-grafica\ExercicioDoisTriangulosPart1\shaders\core\vertex.vert">
+      <Filter>Shader\Core</Filter>
+    </None>
   </ItemGroup>
 </Project>
