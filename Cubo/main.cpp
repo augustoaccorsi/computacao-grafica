@@ -19,7 +19,6 @@
 #include <vector>
 #include "Includes.h"
 #include "Mesh.h"
-#include "math_funcs.h"
 #include "Material.h"
 
 #define _USE_MATH_DEFINES
@@ -403,7 +402,11 @@ int main()
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
 
-	mat4 model = identity_mat4();
+	glm::mat4 model
+		(1.0f, 0.0f, 0.0f, 0.0f, 
+		0.0f, 1.0f, 0.0f, 0.0f, 
+		0.0f, 0.0f, 1.0f, 0.0f, 
+		0.0f, 0.0f, 0.0f, 1.0f);
 
 	GLint projectionLocation = glGetUniformLocation(shaderProgram, "projection");
 	GLint viewLocation = glGetUniformLocation(shaderProgram, "view");
