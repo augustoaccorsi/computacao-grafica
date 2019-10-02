@@ -56,6 +56,7 @@ glm::vec3 camFront = glm::normalize(glm::cross(camDirection, worldUp));
 
 glm::mat4 ViewMatrix = glm::lookAt(camPosition, camPosition + camDirection, worldUp);
 
+bool selecionado = false;
 
 GLuint loadTexture(const char* filename) {
 	// Enabling texture processing
@@ -384,10 +385,16 @@ int main()
 		"in vec3 ourPos;"
 		"in vec2 TexCoord;"
 		"in vec3 ourNormal;"
+		"uniform bool selecionado;"
 		"out vec4 FragColor;"
 		"uniform sampler2D texture1;"
 		"void main()	{"
 		"   FragColor = texture(texture1, TexCoord);"
+		"if (selecionado) {"
+		"   FragColor = vec4(0.5,0.2,0.5,1.0);"
+		"}else{"
+		"   FragColor = vec4(1.0,1.0,1.0,1.0);"
+		"}"
 		"}";
 
 	unsigned int fragmentShader;
@@ -462,8 +469,8 @@ int main()
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture1);
-
 			glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
+			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado);
 
 			glBindVertexArray(g->vao);
 			glDrawArrays(GL_TRIANGLES, 0, g->faces.size() * 3);
@@ -517,53 +524,63 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale)
 {
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		selecionado = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+	{
+		selecionado = false;
+	}
+
+	if (selecionado)
+	{
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			position.y += 0.001f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			position.y += 0.001f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			position.x -= 0.001f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+			position.y -= 0.001f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+			position.x += 0.001f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+			rotation.y -= 0.1f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+			rotation.y += 0.1f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+			rotation.x -= 0.1f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+			rotation.x += 0.1f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+			scale += 0.001f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+			scale -= 0.001f;
+		}
+	}
+
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		camPosition += camSpeed * camDirection;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		camPosition -= camSpeed * camDirection;
-
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 		yawAngle -= dirSpeed;
 		camFront = cross(camDirection, worldUp);
 	}
-
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		yawAngle += dirSpeed;
 		camFront = cross(camDirection, worldUp);
 	}
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		position.y += 0.001f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		position.y += 0.001f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		position.x -= 0.001f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		position.y -= 0.001f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		position.x += 0.001f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-		rotation.y -= 0.1f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-		rotation.y += 0.1f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
-		rotation.x -= 0.1f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-		rotation.x += 0.1f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-		scale += 0.001f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-		scale -= 0.001f;
-	}
-
+	
 }

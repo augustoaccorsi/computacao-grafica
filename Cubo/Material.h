@@ -1,7 +1,6 @@
 #ifndef OPENGL_CG_MATERIAL_H
 #define OPENGL_CG_MATERIAL_H
 
-
 #include "Includes.h"
 
 class Material {
@@ -19,4 +18,4 @@ public:
 };
 
 
-#endif //OPENGL_CG_MATERIAL_H
+#endif
