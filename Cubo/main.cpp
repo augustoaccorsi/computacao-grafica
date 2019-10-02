@@ -117,26 +117,6 @@ void readMTL(const string filename) {
 			sline >> mtlName;
 			m = new Material(mtlName);
 		}
-		else if (temp == "Ka") {
-			float r, g, b;
-			sline >> r >> g >> b;
-			m->ka = new glm::vec3(r, g, b);
-		}
-		else if (temp == "Kd") {
-			float r, g, b;
-			sline >> r >> g >> b;
-			m->kd = new glm::vec3(r, g, b);
-		}
-		else if (temp == "Ks") {
-			float r, g, b;
-			sline >> r >> g >> b;
-			m->ks = new glm::vec3(r, g, b);
-		}
-		else if (temp == "Ns") {
-			float ns;
-			sline >> ns;
-			m->ns = ns;
-		}
 		else if (temp == "map_Kd") {
 			string textureFile;
 			sline >> textureFile;
@@ -146,7 +126,6 @@ void readMTL(const string filename) {
 	materials.push_back(m);
 }
 
-// Read OBJ file
 Mesh* readOBJ(const string filename) {
 	auto mesh = new Mesh;
 	Group* g = nullptr;
@@ -409,12 +388,6 @@ int main()
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
-
-	glm::mat4 model
-		(1.0f, 0.0f, 0.0f, 0.0f, 
-		0.0f, 1.0f, 0.0f, 0.0f, 
-		0.0f, 0.0f, 1.0f, 0.0f, 
-		0.0f, 0.0f, 0.0f, 1.0f);
 
 	GLint projectionLocation = glGetUniformLocation(shaderProgram, "projection");
 	GLint viewLocation = glGetUniformLocation(shaderProgram, "view");
