@@ -29,6 +29,7 @@ using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale);
+void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale, int idObjeto);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -56,7 +57,7 @@ glm::vec3 camFront = glm::normalize(glm::cross(camDirection, worldUp));
 
 glm::mat4 ViewMatrix = glm::lookAt(camPosition, camPosition + camDirection, worldUp);
 
-bool selecionado = false;
+int selecionado = 0;
 
 GLuint loadTexture(const char* filename) {
 	// Enabling texture processing
@@ -432,6 +433,17 @@ int main()
 	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 	ModelMatrix = glm::scale(ModelMatrix, scale);
 
+	glm::vec3 position2(0.5f, 0.2f, 0.0f);
+	glm::vec3 rotation2(0.0f);
+	glm::vec3 scale2(1.f);
+
+	glm::mat4 ModelMatrix2(1.f);
+	ModelMatrix2 = glm::translate(ModelMatrix2, position2);
+	ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.x), glm::vec3(1.f, 0.f, 0.f));
+	ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.y), glm::vec3(0.f, 1.f, 0.f));
+	ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.z), glm::vec3(0.f, 0.f, 1.f));
+	ModelMatrix2 = glm::scale(ModelMatrix2, scale2);
+
 	float fov = 90.f;
 	float nearPlane = 0.1f;
 	float farPlane = 1000.f;
@@ -454,7 +466,8 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
-		processInput(window, position, rotation, scale);
+		processInput(window, position, rotation, scale, 1);
+		processInput(window, position2, rotation2, scale2, 2);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -470,9 +483,14 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture1);
 			glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
-			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado);
+			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 1);
 
 			glBindVertexArray(g->vao);
+			glDrawArrays(GL_TRIANGLES, 0, g->faces.size() * 3);
+
+			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 2);
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix2));
+
 			glDrawArrays(GL_TRIANGLES, 0, g->faces.size() * 3);
 
 		}
@@ -495,6 +513,13 @@ int main()
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 		ModelMatrix = glm::scale(ModelMatrix, scale);
+
+		ModelMatrix2 = glm::mat4(1.f);
+		ModelMatrix2 = glm::translate(ModelMatrix2, position2);
+		ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.x), glm::vec3(1.f, 0.f, 0.f));
+		ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.y), glm::vec3(0.f, 1.f, 0.f));
+		ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.z), glm::vec3(0.f, 0.f, 1.f));
+		ModelMatrix2 = glm::scale(ModelMatrix2, scale2);
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 
@@ -522,18 +547,18 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale)
+void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale, int idObjeto)
 {
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 	{
-		selecionado = true;
+		selecionado = 1;
 	}
 	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 	{
-		selecionado = false;
+		selecionado = 2;
 	}
 
-	if (selecionado)
+	if (selecionado == idObjeto)
 	{
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 			position.y += 0.001f;
