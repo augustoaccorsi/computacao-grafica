@@ -1,21 +1,36 @@
-# Sabertoooth
+# Visualizado de Modelos 3D
 
-This is a repo for studying purposes only.
+Projeto do Grau A da cadeira de Computação Gráfica da Universidade do Vale do Rio dos Sinos
 
-## General Information
+## Infoirmções Gerais
 
-Contains a base project using OpenGL, GLEW and GLFW to build projects upon.
+O prjeto consiste em um aplicativo para leitura de objetos 3D (formato OBJ) e renderização com shaders (OpenGL 4+).
 
-SOIL and GLM, as well as a class for Shader compiling, are already included.
+## Instruções
 
-## Instructions
+|                 Ações do Usuário                           |
+-------------------------------------------------------------|
+| 1 - Seleciona o primeiro objeto                            |
+| 1 - Seleciona o segundo objeto                             |
+| W - translata o objeto +N unidades no eixo Y               |
+| S - translata o objeto -N unidades no eixo Y               |
+| A - translata o objeto -N unidades no eixo X               |
+| D - translata o objeto +N unidades no eixo X               |
+| E - rotaciona N graus para direita em relação ao eixo Y    |
+| Q - rotaciona N graus para a esquerda em relação ao eixo Y |
+| Z - rotaciona N graus para direita em relação ao eixo X    |
+| C - rotaciona N graus para a esquerda em relação ao eixo X |
+| T - escala o objeto em 10% a mais do seu tamanho atual     | 
+| G - escala o objeto em 10% a menos do seu tamanho atual    |
+| → - rotaciona a câmera para a direita                      |
+| ← - rotaciona a câmera para a esquerda                     |
+| ↑ - move câmera para frente                                |
+| ↓ - move câmera para trás                                  |
 
-1. Open Visual Studio
-2. Click on "Open Project/Solution"
-3. Go to the folder where you downloaded this project
-4. Select "Sabertooth.sln"
+## Open Points
 
-### Windows SDK error
+  - Ajustar a Textura
+  - Criar uma classe para a leitura de OBJs
 
-1. Under "Solution Explorer", right-click the solution and select "Retarget Solution"
-2. Select your Windows SDK
+
+Projeto inicial: (Sabertooth)[https://github.com/RafaelFreita/Sabertooth]
