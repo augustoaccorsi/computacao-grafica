@@ -33,4 +33,4 @@ O prjeto consiste em um aplicativo para leitura de objetos 3D (formato OBJ) e re
   - Criar uma classe para a leitura de OBJs
 
 
-Projeto inicial: (Sabertooth)[https://github.com/RafaelFreita/Sabertooth]
+Projeto inicial: [Sabertooth](https://github.com/RafaelFreita/Sabertooth)
