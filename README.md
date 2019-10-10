@@ -29,8 +29,8 @@ O prjeto consiste em um aplicativo para leitura de objetos 3D (formato OBJ) e re
 
 ## Open Points
 
-  - Ajustar a Textura
   - Criar uma classe para a leitura de OBJs
+  - Mover os Shaders para arquivos
 
 
 Projeto inicial: [Sabertooth](https://github.com/RafaelFreita/Sabertooth)
