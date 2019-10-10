@@ -329,8 +329,8 @@ int main()
 	const char* vertexShaderSource =
 		"#version 410 core\n"
 		"layout(location = 0) in vec3 aPos;"
-		"layout (location = 1) in vec2 aTexCoord;"
-		"layout (location = 2) in vec3 aNormal;"
+		"layout (location = 2) in vec2 aTexCoord;"
+		"layout (location = 1) in vec3 aNormal;"
 		"out vec3 ourPos;"
 		"out vec2 TexCoord;"
 		"out vec3 ourNormal;"
@@ -339,7 +339,7 @@ int main()
 		"uniform mat4 ProjectionMatrix;"
 		"void main() {"
 		"   ourPos = vec4(ModelMatrix * vec4(aPos, 1.f)).xyz;"
-		"   TexCoord = vec2(aTexCoord.x, aTexCoord.y * -1.0f);"
+		"   TexCoord = aTexCoord;"
 		"   ourNormal = mat3(ModelMatrix) * aNormal;"
 		"   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(aPos, 1.f);"
 		"}";
@@ -366,11 +366,10 @@ int main()
 		"out vec4 FragColor;"
 		"uniform sampler2D texture1;"
 		"void main()	{"
-		"   FragColor = texture(texture1, TexCoord);"
 		"if (selecionado) {"
-		"   FragColor = vec4(0.5,0.2,0.5,1.0);"
+		"   FragColor = texture(texture1, TexCoord) * vec4(0.5,0.2,0.5,1.0);"
 		"}else{"
-		"   FragColor = vec4(1.0,1.0,1.0,1.0);"
+		"   FragColor = texture(texture1, TexCoord) * vec4(1.0,1.0,1.0,1.0);"
 		"}"
 		"}";
 
