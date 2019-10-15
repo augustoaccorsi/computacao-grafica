@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <vector>
 
-#include "Includes.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "Obj3D.h"
+#include "Headers/Includes.h"
+#include "Headers/Mesh.h"
+#include "Headers/Material.h"
+#include "Headers/Obj3D.h"
 
 using namespace std;
 

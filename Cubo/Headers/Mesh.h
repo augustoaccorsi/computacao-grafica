@@ -2,7 +2,7 @@
 #define OPENGL_CG_MESH_H
 
 #include "Includes.h"
-#include "Group.h"
+#include "Headers/Group.h"
 
 class Mesh {
 public:
