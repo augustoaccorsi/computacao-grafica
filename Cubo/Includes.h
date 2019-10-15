@@ -17,6 +17,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <GLM/vec2.hpp>
+#include <GLM/vec3.hpp>
+#include <GLM/vec4.hpp>
+#include <GLM/mat4x4.hpp>
 
+//SOIL
+#include <Soil.h>
 
 using namespace std;

@@ -2,28 +2,12 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <stdio.h>
-#include <GL/glew.h> /* include GLEW and new version of GL on Windows */
-#include <GLFW/glfw3.h> /* GLFW helper library */
-#include <GLM/glm.hpp>
-#include <GLM/vec2.hpp>
-#include <GLM/vec3.hpp>
-#include <GLM/vec4.hpp>
-#include <GLM/mat4x4.hpp>
-#include <GLM/gtc/matrix_transform.hpp>
-#include <GLM/gtc/type_ptr.hpp>
-#include <Soil.h>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include <vector>
+
 #include "Includes.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "Obj3D.h"
-
-#define _USE_MATH_DEFINES
-#include <cmath>
 
 using namespace std;
 
