@@ -1,7 +1,7 @@
 #ifndef OPENGL_CG_GROUP_H
 #define OPENGL_CG_GROUP_H
 
-#include "Face.hpp"
+#include "../Face.cpp"
 
 class Group {
 public:

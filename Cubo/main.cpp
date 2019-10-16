@@ -8,6 +8,7 @@
 #include "Headers/Mesh.h"
 #include "Headers/Material.h"
 #include "Headers/Obj3D.h"
+#include "Headers/Shader.h"
 
 using namespace std;
 
@@ -68,69 +69,8 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	const char* vertexShaderSource =
-		"#version 410 core\n"
-		"layout(location = 0) in vec3 aPos;"
-		"layout (location = 2) in vec2 aTexCoord;"
-		"layout (location = 1) in vec3 aNormal;"
-		"out vec3 ourPos;"
-		"out vec2 TexCoord;"
-		"out vec3 ourNormal;"
-		"uniform mat4 ModelMatrix;"
-		"uniform mat4 ViewMatrix;"
-		"uniform mat4 ProjectionMatrix;"
-		"void main() {"
-		"   ourPos = vec4(ModelMatrix * vec4(aPos, 1.f)).xyz;"
-		"   TexCoord = aTexCoord;"
-		"   ourNormal = mat3(ModelMatrix) * aNormal;"
-		"   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(aPos, 1.f);"
-		"}";
 
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	GLint sucess;
-
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &sucess);
-	if (!sucess) {
-		cout << "Error Vertex";
-	}
-
-	const char* fragmentShaderSource =
-		"#version 410 core\n"
-		"in vec3 ourPos;"
-		"in vec2 TexCoord;"
-		"in vec3 ourNormal;"
-		"uniform bool selecionado;"
-		"out vec4 FragColor;"
-		"uniform sampler2D texture1;"
-		"void main()	{"
-		"if (selecionado) {"
-		"   FragColor = texture(texture1, TexCoord) * vec4(0.5,0.2,0.5,1.0);"
-		"}else{"
-		"   FragColor = texture(texture1, TexCoord) * vec4(1.0,1.0,1.0,1.0);"
-		"}"
-		"}";
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	int shaderProgram;
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	GLint projectionLocation = glGetUniformLocation(shaderProgram, "projection");
-	GLint viewLocation = glGetUniformLocation(shaderProgram, "view");
-	GLint modelLocation = glGetUniformLocation(shaderProgram, "model");
-
+	GLuint shaderProgram = LoadShader("Shaders/Core/core.vert", "Shaders/Core/core.frag");
 	glUseProgram(shaderProgram);
 
 	glm::vec3 position(0.f);

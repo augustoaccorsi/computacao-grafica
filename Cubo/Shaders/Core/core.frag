@@ -1,4 +1,5 @@
-#version 410 core\n
+#version 410 core
+
 in vec3 ourPos;
 in vec2 TexCoord;
 in vec3 ourNormal;

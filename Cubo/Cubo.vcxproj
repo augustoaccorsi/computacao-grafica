@@ -130,22 +130,23 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssetManager.h" />
-    <ClInclude Include="Face.hpp" />
-    <ClInclude Include="Group.h" />
-    <ClInclude Include="Includes.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="math_funcs.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="System.h" />
-    <ClInclude Include="Texture.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="Shaders\Core\core.frag" />
     <None Include="Shaders\Core\core.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Headers\AssetManager.h" />
+    <ClInclude Include="Headers\Group.h" />
+    <ClInclude Include="Headers\Includes.h" />
+    <ClInclude Include="Headers\Material.h" />
+    <ClInclude Include="Headers\Mesh.h" />
+    <ClInclude Include="Headers\Obj3D.h" />
+    <ClInclude Include="Headers\Shader.h" />
+    <ClInclude Include="Headers\System.h" />
+    <ClInclude Include="Headers\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
