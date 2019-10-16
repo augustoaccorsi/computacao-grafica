@@ -47,7 +47,7 @@ int main()
 {
 	glfwInit();
 
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Computacao Grafica - GA", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -69,7 +69,7 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
+	//read shaders
 	GLuint shaderProgram = LoadShader("Shaders/Core/core.vert", "Shaders/Core/core.frag");
 	glUseProgram(shaderProgram);
 
@@ -110,9 +110,6 @@ int main()
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 
-	//Mesh* readMesh = readOBJ("teste2.obj");
-	//loadVertices(readMesh);
-
 	Obj3D obj;
 	Mesh* readMesh = obj.processObj("teste2.obj");
 	vector<Material*> materials = obj.getMat();
@@ -130,14 +127,14 @@ int main()
 
 		glUseProgram(shaderProgram);
 
-		GLuint texture1;
+		GLuint texture;
 		for (Group* g : readMesh->groups) {
 			for (Material* m : materials) {
-				texture1 = m->texture;
+				texture = m->texture;
 			}
 
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture1);
+			glBindTexture(GL_TEXTURE_2D, texture);
 			glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
 			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 1);
 
@@ -194,8 +191,9 @@ int main()
 
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
+	}
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -251,10 +249,12 @@ void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, 
 		}
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 		camPosition += camSpeed * camDirection;
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		camPosition -= camSpeed * camDirection;
+	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 		yawAngle -= dirSpeed;
 		camFront = cross(camDirection, worldUp);
@@ -263,5 +263,5 @@ void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, 
 		yawAngle += dirSpeed;
 		camFront = cross(camDirection, worldUp);
 	}
-	
+
 }
