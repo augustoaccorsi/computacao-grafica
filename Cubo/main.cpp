@@ -16,6 +16,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale);
 void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale, int idObjeto);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -24,6 +25,8 @@ const unsigned int SCR_HEIGHT = 600;
 //camera
 float camSpeed = 0.01f;
 float dirSpeed = 0.01f;
+
+bool firtMouse = true;
 
 float pitchAngle = -30.f;
 float yawAngle = -90.f;
@@ -55,6 +58,10 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
+	
+	//mouse
+	glfwSetCursorPosCallback(window, mouse_callback);
+
 	glewExperimental = GL_TRUE;
 	glewInit();
 
@@ -114,7 +121,7 @@ int main()
 	Mesh* readMesh = obj.processObj("teste2.obj");
 	vector<Material*> materials = obj.getMat();
 
-	glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+	glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -122,6 +129,8 @@ int main()
 		processInput(window, position, rotation, scale, 1);
 		processInput(window, position2, rotation2, scale2, 2);
 
+		int mouseState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+		
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -135,7 +144,7 @@ int main()
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture);
-			glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
+			glUniform1i(glGetUniformLocation(shaderProgram, "texture"), 0);
 			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 1);
 
 			glBindVertexArray(g->vao);
@@ -166,6 +175,7 @@ int main()
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 		ModelMatrix = glm::scale(ModelMatrix, scale);
+
 
 		ModelMatrix2 = glm::mat4(1.f);
 		ModelMatrix2 = glm::translate(ModelMatrix2, position2);
@@ -199,6 +209,18 @@ void processInput(GLFWwindow* window)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	int pressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+	
+	if (pressed == 1) {
+		cout << "mouse pressionado";
+	}
+	else {
+
+	}
 }
 
 void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale, int idObjeto)
