@@ -140,6 +140,10 @@ int main()
 		for (Group* g : readMesh->groups) {
 			for (Material* m : materials) {
 				texture = m->texture;
+				glUniform3f(glGetUniformLocation(shaderProgram, "Ka"), m->ka->r, m->ka->g, m->ka->b);
+				glUniform3f(glGetUniformLocation(shaderProgram, "Kd"), m->kd->r, m->kd->g, m->kd->b);
+				glUniform3f(glGetUniformLocation(shaderProgram, "Ks"), m->ks->r, m->ks->g, m->ks->b);
+				glUniform1f(glGetUniformLocation(shaderProgram, "Ns"), m->ns);
 			}
 
 			glActiveTexture(GL_TEXTURE0);

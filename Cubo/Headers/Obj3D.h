@@ -78,6 +78,26 @@ private:
 				sline >> mtlName;
 				m = new Material(mtlName);
 			}
+			else if (temp == "Ka") {
+				float r, g, b;
+				sline >> r >> g >> b;
+				m->ka = new glm::vec3(r, g, b);
+			}
+			else if (temp == "Kd") {
+				float r, g, b;
+				sline >> r >> g >> b;
+				m->kd = new glm::vec3(r, g, b);
+			}
+			else if (temp == "Ks") {
+				float r, g, b;
+				sline >> r >> g >> b;
+				m->ks = new glm::vec3(r, g, b);
+			}
+			else if (temp == "Ns") {
+				float ns;
+				sline >> ns;
+				m->ns = ns;
+			}
 			else if (temp == "map_Kd") {
 				string textureFile;
 				sline >> textureFile;
