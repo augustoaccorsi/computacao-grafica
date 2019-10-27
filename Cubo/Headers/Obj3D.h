@@ -8,6 +8,7 @@ public:
 	Mesh* obj;
 	vector<Material*> materials;
 
+
 	Mesh* Obj3D::processObj(const string filename) {
 		Mesh* mesh = readOBJ(filename);
 		loadVertices(mesh);
@@ -21,7 +22,6 @@ public:
 private:
 
 	GLuint loadTexture(const char* filename) {
-		// Enabling texture processing
 		glEnable(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

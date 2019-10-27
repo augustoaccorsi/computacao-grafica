@@ -6,6 +6,7 @@ in vec3 ourNormal;
 in vec3 eye_position, eye_normal;
 uniform bool selecionado;
 out vec4 FragColor;
+uniform mat4 ViewMatrix;
 uniform sampler2D texture1;
 uniform vec3 Ka, Kd, Ks;
 uniform float Ns;
@@ -16,7 +17,7 @@ vec3 Ls = vec3 (1.0, 1.0, 1.0);
 void main()	{
 	vec3 Ia = La * Ka;
 	vec3 n_eye = normalize(eye_normal);
-	vec3 light_position_eye = vec3 (view * vec4 (light_position_world, 1.0));
+	vec3 light_position_eye = vec3 (ViewMatrix * vec4 (light_position_world, 1.0));
 	vec3 distance_to_light_eye = light_position_eye - eye_position;
 	vec3 direction_to_light_eye = normalize (distance_to_light_eye);
 	float dot_prod = dot (direction_to_light_eye, n_eye);

@@ -118,7 +118,7 @@ int main()
 	glFrontFace(GL_CCW);
 
 	Obj3D obj;
-	Mesh* readMesh = obj.processObj("teste2.obj");
+	Mesh* readMesh = obj.processObj("mesa01.obj");
 	vector<Material*> materials = obj.getMat();
 
 	glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
