@@ -99,7 +99,7 @@ int main()
 
 	Obj3D* obj3d = new Obj3D();
 	obj3d->Inicializar();
-	obj3d->position.x = 0.5f;
+	obj3d->position.x = 5.0f;
 	Mesh* mesh = obj3d->processObj("mesa01.obj");
 	obj3d->mesh = mesh;
 	vector<Material*> materials = obj3d->getMat();
@@ -118,6 +118,10 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
+
+		processInput(window);
+		processInput(window, listaDeObjs[selecionado - 1]->position, listaDeObjs[selecionado - 1]->rotation, listaDeObjs[selecionado - 1]->scale, selecionado);
+
 		int mouseState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -142,11 +146,9 @@ int main()
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
 
-		processInput(window);
-		processInput(window, listaDeObjs[selecionado - 1]->position, listaDeObjs[selecionado - 1]->rotation, listaDeObjs[selecionado - 1]->scale, selecionado);
-
 		for (int i = 0; i < listaDeObjs.size(); i++)
 		{
+			listaDeObjs[i]->transform();
 			GLuint texture;
 			for (Group* g : listaDeObjs[i]->mesh->groups) {
 				for (Material* m : listaDeObjs[i]->materials) {
@@ -160,11 +162,10 @@ int main()
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture);
 				glUniform1i(glGetUniformLocation(shaderProgram, "texture"), 0);
-				glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 1);
 
 				glBindVertexArray(g->vao);
 
-				glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 2);
+				glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == i+1);
 				glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(listaDeObjs[i]->ModelMatrix));
 
 				glDrawArrays(GL_TRIANGLES, 0, g->faces.size() * 3);

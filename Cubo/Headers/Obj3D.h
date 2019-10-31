@@ -16,7 +16,9 @@ public:
 		this->position = glm::vec3(0.1f, 0.1f, 0.1f);
 		this->rotation = glm::vec3(0.0f);
 		this->scale = glm::vec3(1.f);
+	}
 
+	void transform() {
 		this->ModelMatrix = glm::mat4(1.0f);
 		this->ModelMatrix = glm::translate(this->ModelMatrix, this->position);
 		this->ModelMatrix = glm::rotate(this->ModelMatrix, glm::radians(this->rotation.x), glm::vec3(1.f, 0.f, 0.f));
