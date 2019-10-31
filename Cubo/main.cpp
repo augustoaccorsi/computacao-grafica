@@ -17,6 +17,7 @@ void processInput(GLFWwindow* window);
 void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale);
 void processInput(GLFWwindow* window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale, int idObjeto);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+vector<Obj3D*> listaDeObjs;
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -44,7 +45,7 @@ glm::vec3 camFront = glm::normalize(glm::cross(camDirection, worldUp));
 
 glm::mat4 ViewMatrix = glm::lookAt(camPosition, camPosition + camDirection, worldUp);
 
-int selecionado = 0;
+int selecionado = 1;
 
 int main()
 {
@@ -58,7 +59,7 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	
+
 	//mouse
 	glfwSetCursorPosCallback(window, mouse_callback);
 
@@ -80,28 +81,6 @@ int main()
 	GLuint shaderProgram = LoadShader("Shaders/Core/core.vert", "Shaders/Core/core.frag");
 	glUseProgram(shaderProgram);
 
-	glm::vec3 position(0.f);
-	glm::vec3 rotation(0.f);
-	glm::vec3 scale(1.f);
-
-	glm::mat4 ModelMatrix(1.f);
-	ModelMatrix = glm::translate(ModelMatrix, position);
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-	ModelMatrix = glm::scale(ModelMatrix, scale);
-
-	glm::vec3 position2(0.5f, 0.2f, 0.0f);
-	glm::vec3 rotation2(0.0f);
-	glm::vec3 scale2(1.f);
-
-	glm::mat4 ModelMatrix2(1.f);
-	ModelMatrix2 = glm::translate(ModelMatrix2, position2);
-	ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.x), glm::vec3(1.f, 0.f, 0.f));
-	ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.y), glm::vec3(0.f, 1.f, 0.f));
-	ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.z), glm::vec3(0.f, 0.f, 1.f));
-	ModelMatrix2 = glm::scale(ModelMatrix2, scale2);
-
 	float fov = 90.f;
 	float nearPlane = 0.1f;
 	float farPlane = 1000.f;
@@ -109,6 +88,7 @@ int main()
 
 	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
+	glm::mat4 ModelMatrix(1.f);
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
@@ -117,47 +97,37 @@ int main()
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 
-	Obj3D obj;
-	Mesh* readMesh = obj.processObj("teste2.obj");
-	vector<Material*> materials = obj.getMat();
+	Obj3D* obj3d = new Obj3D();
+	obj3d->Inicializar();
+	obj3d->position.x = 5.0f;
+	Mesh* mesh = obj3d->processObj("mesa01.obj");
+	obj3d->mesh = mesh;
+	vector<Material*> materials = obj3d->getMat();
+	obj3d->materials = materials;
+	listaDeObjs.push_back(obj3d);
+
+	Obj3D* obj3d2 = new Obj3D();
+	obj3d2->Inicializar();
+	Mesh* mesh2 = obj3d2->processObj("mesa01.obj");
+	obj3d2->mesh = mesh2;
+	vector<Material*> materials2 = obj3d2->getMat();
+	obj3d2->materials = materials2;
+	listaDeObjs.push_back(obj3d2);
 
 	glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 
 	while (!glfwWindowShouldClose(window))
 	{
+
 		processInput(window);
-		processInput(window, position, rotation, scale, 1);
-		processInput(window, position2, rotation2, scale2, 2);
+		processInput(window, listaDeObjs[selecionado - 1]->position, listaDeObjs[selecionado - 1]->rotation, listaDeObjs[selecionado - 1]->scale, selecionado);
 
 		int mouseState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
-		
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glUseProgram(shaderProgram);
-
-		GLuint texture;
-		for (Group* g : readMesh->groups) {
-			for (Material* m : materials) {
-				texture = m->texture;
-			}
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glUniform1i(glGetUniformLocation(shaderProgram, "texture"), 0);
-			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 1);
-
-			glBindVertexArray(g->vao);
-			glDrawArrays(GL_TRIANGLES, 0, g->faces.size() * 3);
-
-			glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == 2);
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix2));
-
-			glDrawArrays(GL_TRIANGLES, 0, g->faces.size() * 3);
-
-		}
-
-		glfwPollEvents();
 
 		glm::vec3 camFrontCalc;
 		camFrontCalc.x = cos(glm::radians(pitchAngle)) * cos(glm::radians(yawAngle));
@@ -169,23 +139,6 @@ int main()
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
 
-		ModelMatrix = glm::mat4(1.f);
-		ModelMatrix = glm::translate(ModelMatrix, position);
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-		ModelMatrix = glm::scale(ModelMatrix, scale);
-
-
-		ModelMatrix2 = glm::mat4(1.f);
-		ModelMatrix2 = glm::translate(ModelMatrix2, position2);
-		ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.x), glm::vec3(1.f, 0.f, 0.f));
-		ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.y), glm::vec3(0.f, 1.f, 0.f));
-		ModelMatrix2 = glm::rotate(ModelMatrix2, glm::radians(rotation2.z), glm::vec3(0.f, 0.f, 1.f));
-		ModelMatrix2 = glm::scale(ModelMatrix2, scale2);
-
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 
 		ProjectionMatrix = glm::mat4(1.f);
@@ -193,6 +146,33 @@ int main()
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
 
+		for (int i = 0; i < listaDeObjs.size(); i++)
+		{
+			listaDeObjs[i]->transform();
+			GLuint texture;
+			for (Group* g : listaDeObjs[i]->mesh->groups) {
+				for (Material* m : listaDeObjs[i]->materials) {
+					texture = m->texture;
+					glUniform3f(glGetUniformLocation(shaderProgram, "Ka"), m->ka->r, m->ka->g, m->ka->b);
+					glUniform3f(glGetUniformLocation(shaderProgram, "Kd"), m->kd->r, m->kd->g, m->kd->b);
+					glUniform3f(glGetUniformLocation(shaderProgram, "Ks"), m->ks->r, m->ks->g, m->ks->b);
+					glUniform1f(glGetUniformLocation(shaderProgram, "Ns"), m->ns);
+				}
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texture);
+				glUniform1i(glGetUniformLocation(shaderProgram, "texture"), 0);
+
+				glBindVertexArray(g->vao);
+
+				glUniform1i((glGetUniformLocation(shaderProgram, "selecionado")), selecionado == i+1);
+				glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(listaDeObjs[i]->ModelMatrix));
+
+				glDrawArrays(GL_TRIANGLES, 0, g->faces.size() * 3);
+			}
+		}
+
+		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
@@ -214,7 +194,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	int pressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
-	
+
 	if (pressed == 1) {
 		cout << "mouse pressionado";
 	}

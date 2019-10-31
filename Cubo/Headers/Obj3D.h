@@ -5,8 +5,28 @@
 
 class Obj3D {
 public:
-	Mesh* obj;
+	Mesh* mesh;
 	vector<Material*> materials;
+	glm::mat4 ModelMatrix;
+	glm::vec3 position;
+	glm::vec3 rotation;
+	glm::vec3 scale;
+
+	void Inicializar() {
+		this->position = glm::vec3(0.1f, 0.1f, 0.1f);
+		this->rotation = glm::vec3(0.0f);
+		this->scale = glm::vec3(1.f);
+	}
+
+	void transform() {
+		this->ModelMatrix = glm::mat4(1.0f);
+		this->ModelMatrix = glm::translate(this->ModelMatrix, this->position);
+		this->ModelMatrix = glm::rotate(this->ModelMatrix, glm::radians(this->rotation.x), glm::vec3(1.f, 0.f, 0.f));
+		this->ModelMatrix = glm::rotate(this->ModelMatrix, glm::radians(this->rotation.y), glm::vec3(0.f, 1.f, 0.f));
+		this->ModelMatrix = glm::rotate(this->ModelMatrix, glm::radians(this->rotation.z), glm::vec3(0.f, 0.f, 1.f));
+		this->ModelMatrix = glm::scale(this->ModelMatrix, this->scale);
+
+	}
 
 	Mesh* Obj3D::processObj(const string filename) {
 		Mesh* mesh = readOBJ(filename);
@@ -21,7 +41,6 @@ public:
 private:
 
 	GLuint loadTexture(const char* filename) {
-		// Enabling texture processing
 		glEnable(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -77,6 +96,26 @@ private:
 				string mtlName;
 				sline >> mtlName;
 				m = new Material(mtlName);
+			}
+			else if (temp == "Ka") {
+				float r, g, b;
+				sline >> r >> g >> b;
+				m->ka = new glm::vec3(r, g, b);
+			}
+			else if (temp == "Kd") {
+				float r, g, b;
+				sline >> r >> g >> b;
+				m->kd = new glm::vec3(r, g, b);
+			}
+			else if (temp == "Ks") {
+				float r, g, b;
+				sline >> r >> g >> b;
+				m->ks = new glm::vec3(r, g, b);
+			}
+			else if (temp == "Ns") {
+				float ns;
+				sline >> ns;
+				m->ns = ns;
 			}
 			else if (temp == "map_Kd") {
 				string textureFile;
