@@ -2,9 +2,9 @@
 
 Projeto do Grau A da cadeira de Computação Gráfica da Universidade do Vale do Rio dos Sinos
 
-## Infoirmções Gerais
+## Informações Gerais
 
-O prjeto consiste em um aplicativo para leitura de objetos 3D (formato OBJ) e renderização com shaders (OpenGL 4+).
+O projeto consiste em um aplicativo para leitura de objetos 3D (formato OBJ) e renderização com shaders (OpenGL 4+).
 
 ## Instruções
 
