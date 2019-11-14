@@ -18,8 +18,9 @@
 x64/
 x86/
 bld/
-[Bb]in/
-#[Oo]bj/
+#[Bb]in/
+[Oo]bj/
+[Ll]og/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -48,7 +49,6 @@ artifacts/
 *_i.h
 *.ilk
 *.meta
-#*.obj
 *.pch
 *.pdb
 *.pgc
@@ -162,12 +162,11 @@ csx/
 ecf/
 rcf/
 
-# Microsoft Azure ApplicationInsights config file
-ApplicationInsights.config
-
-# Windows Store app package directory
+# Windows Store app package directories and files
 AppPackages/
 BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -185,6 +184,10 @@ ClientBin/
 *.publishsettings
 node_modules/
 orleans.codegen.cs
+
+# Since there are multiple workflows, uncomment next line to ignore bower_components 
+# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
+#bower_components/
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -231,6 +234,11 @@ _Pvt_Extensions
 
 # Paket dependency manager
 .paket/paket.exe
+paket-files/
 
 # FAKE - F# Make
 .fake/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
